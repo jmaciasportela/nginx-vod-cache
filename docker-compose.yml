@@ -12,8 +12,6 @@ services:
         volumes:
             - './nginx_vod.conf:/usr/local/nginx/conf/nginx.conf'
             - './videos:/opt/static/videos'
-        ports:
-            - "80:80"
         networks:
             - "vod"
         stop_grace_period: 30s

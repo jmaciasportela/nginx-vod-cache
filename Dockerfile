@@ -23,6 +23,7 @@ RUN make install
 RUN rm -rf /usr/local/nginx/html /usr/local/nginx/conf/*.default
 
 FROM base_image
+RUN apk add --no-cache ca-certificates openssl pcre zlib ffmpeg ffmpeg-dev
 COPY --from=build /usr/local/nginx /usr/local/nginx
 RUN mkdir -p /var/www/html/thumbs/ /var/www/html/videos/hls/ /var/www/html/videos/dash/
 ENTRYPOINT ["/usr/local/nginx/sbin/nginx"]
