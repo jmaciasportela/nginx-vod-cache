@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+    nginx_vod:
+        image: nginxvod:latest
+        build: .
+        restart: unless-stopped
+        logging:
+            driver: "json-file"
+            options:
+                max-file: "5"
+                max-size: "10m"
+        volumes:
+            - './nginx_vod.conf:/usr/local/nginx/conf/nginx.conf'
+            - './videos:/opt/static/videos'
+        ports:
+            - "80:80"
+        networks:
+            - "vod"
+        stop_grace_period: 30s
+
+    nginx_cache:
+        image: nginxvod:latest
+        restart: unless-stopped
+        logging:
+            driver: "json-file"
+            options:
+                max-file: "5"
+                max-size: "10m"
+        ports:
+            - "80:80"
+        volumes:
+            - './nginx_cache.conf:/usr/local/nginx/conf/nginx.conf'
+        networks:
+            - "vod"
+        depends_on:
+            - nginx_vod
+networks:
+    vod:
